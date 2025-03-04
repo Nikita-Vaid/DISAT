@@ -1,14 +1,15 @@
-
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Registration from "./Component/Pages/Registration";
 
 
 function App() {
-  
   return (
-    <>
-      <h1> Hello</h1>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Registration/>} /> 
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
