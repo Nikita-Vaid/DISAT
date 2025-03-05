@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import axios from "axios";
 import "../../Styles/RegForm.css";
 import { Link } from "react-router-dom";
 import DIAST from "../../assets/DIAST.png";
@@ -7,32 +8,55 @@ import Calendar from "../../assets/Calendar.png";
 import TestDetails from "./TestDetails";
 
 const RegForm = () => {
-    const [inputValue, setInputValue] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [otp, setOtp] = useState("");
+    const [otpSent, setOtpSent] = useState(false);
+    const [verified, setVerified] = useState(false);
     const [error, setError] = useState("");
-    const [isVerified, setIsVerified] = useState(false);
 
-    const validateInput = (value) => {
-        if (!value) {
-            setError("Please enter correct mobile number");
-            return false;
-        } else if (!/^\d{10}$/.test(value)) {
+    const validateMobile = (value) => {
+        if (!/^\d{10}$/.test(value)) {
             setError("Enter a valid 10-digit mobile number.");
             return false;
-        } else {
-            setError("");
-            return true;
         }
+        setError("");
+        return true;
     };
 
     const handleChange = (e) => {
-        setInputValue(e.target.value);
-        validateInput(e.target.value);
+        setMobile(e.target.value);
+        validateMobile(e.target.value);
     };
 
-    const handleVerify = () => {
-        if (validateInput(inputValue)) {
-            setIsVerified(true);
-            alert("Verification successful!");
+    // Function to send OTP
+    const sendOtp = async () => {
+        if (!validateMobile(mobile)) return;
+
+        try {
+            const response = await axios.post("http://localhost:5000/api/send-otp", { mobile });
+            if (response.data.success) {
+                setOtpSent(true);
+                setError("");
+            } else {
+                setError("Failed to send OTP. Try again.");
+            }
+        } catch (err) {
+            setError("Error sending OTP. Please check your connection.");
+        }
+    };
+
+    // Function to verify OTP
+    const verifyOtp = async () => {
+        try {
+            const response = await axios.post("http://localhost:5000/api/verify-otp", { mobile, otp });
+            if (response.data.success) {
+                setVerified(true);
+                setError("");
+            } else {
+                setError("Invalid OTP. Please try again.");
+            }
+        } catch (err) {
+            setError("Error verifying OTP. Please try again.");
         }
     };
 
@@ -56,27 +80,42 @@ const RegForm = () => {
                             <h2>Register Now</h2>
                             <p className="help-link">How to register?</p>
 
-                            {/* Input Field with Error Handling */}
+                            {/* Mobile Number Input */}
                             <input
                                 type="text"
                                 placeholder="Enter Mobile No."
                                 className={`input-box ${error ? "error" : ""}`}
-                                value={inputValue}
+                                value={mobile}
                                 onChange={handleChange}
+                                disabled={otpSent} // Disable input after sending OTP
                             />
                             {error && <p className="error-message">{error}</p>}
 
-                            {/* Verify Button */}
-                            <button
-                                className={`verify-button ${isVerified ? "verified" : ""}`}
-                                onClick={handleVerify}
-                                disabled={!inputValue || !!error}
-                            >
-                                {isVerified ? "Verified ✅" : "Verify"}
-                            </button>
+                            {/* OTP Verification */}
+                            {!otpSent ? (
+                                <button className="verify-button" onClick={sendOtp}>
+                                    Send OTP
+                                </button>
+                            ) : (
+                                <>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter OTP"
+                                        className="input-box"
+                                        value={otp}
+                                        onChange={(e) => setOtp(e.target.value)}
+                                    />
+                                    <button className="verify-button" onClick={verifyOtp}>
+                                        Verify OTP
+                                    </button>
+                                </>
+                            )}
+
+                            {/* Registration Success Message */}
+                            {verified && <p className="success-text">✅ Registration Successful!</p>}
 
                             <p className="login-text">
-                                Already registered? <a href="/login">Log in</a>
+                                Already registered? <Link to="/login">Log in</Link>
                             </p>
                             <p className="terms">
                                 By proceeding, you agree to DOT’s <a href="/privacy">Privacy Policy</a> and <a href="/terms">T&C</a>.
@@ -88,9 +127,11 @@ const RegForm = () => {
                     </div>
                 </div>
             </div>
+
             <div>
                 <TestDetails />
             </div>
+
             <div className="scholarship-banner">
                 <p>
                     iACST Scholarship(s) are valid for <strong>30 days</strong> only.
