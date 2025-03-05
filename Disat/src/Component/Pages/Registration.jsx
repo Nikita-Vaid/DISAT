@@ -1,9 +1,17 @@
 import React from 'react'
 import "../../Styles/Registration.css";
-const Registration = () => {
+import Navbar from './Navbar';
+import RegForm from './RegForm';
+
+
+function Registration() {
   return (
-    <div>Registration</div>
-  )
+    <div>
+      <Navbar/>
+      <RegForm/>
+      
+    </div>
+  );
 }
 
-export default Registration
+export default Registration;
