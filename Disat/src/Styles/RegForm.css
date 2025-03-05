@@ -18,11 +18,15 @@ body {
 
 /* Wrapper for Left & Right Sections */
 .two-main {
-  /* padding-bottom: 40px; */
-  display: flex; /* Use flexbox */
-  justify-content: center;
+  display: flex;
+  justify-content: space-between; /* Ensures equal spacing */
   align-items: center;
+  max-width: 1200px; /* Adjust width as needed */
+  margin: 0 auto; /* Centers the container */
+  padding: 0 50px; /* Adds equal padding on both sides */
+  width: 100%;
 }
+
 
 /* Left Content (DIAST + Student Image) */
 .left-content {
