@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../Styles/RegForm.css";
+import { Link } from "react-router-dom";
 import DIAST from "../../assets/DIAST.png";
 import studentimage from "../../assets/student-image2.png";
 import Calendar from "../../assets/Calendar.png";
@@ -101,3 +102,68 @@ const RegForm = () => {
 };
 
 export default RegForm;
+// import React, { useState } from "react";
+// import axios from "axios";
+
+// const RegForm = () => {
+//   const [mobile, setMobile] = useState("");
+//   const [otp, setOtp] = useState("");
+//   const [otpSent, setOtpSent] = useState(false);
+//   const [verified, setVerified] = useState(false);
+//   const [error, setError] = useState("");
+
+//   // Send OTP
+//   const sendOtp = async () => {
+//     if (!/^\d{10}$/.test(mobile)) {
+//       setError("Enter a valid 10-digit number");
+//       return;
+//     }
+//     setError("");
+
+//     try {
+//       const response = await axios.post("http://localhost:5000/api/send-otp", { mobile });
+//       if (response.data.success) {
+//         setOtpSent(true);
+//         setError("");
+//       } else {
+//         setError(response.data.message);
+//       }
+//     } catch {
+//       setError("Error sending OTP. Try again.");
+//     }
+//   };
+
+//   // Verify OTP
+//   const verifyOtp = async () => {
+//     try {
+//       const response = await axios.post("http://localhost:5000/api/verify-otp", { mobile, otp });
+//       if (response.data.success) {
+//         setVerified(true);
+//       } else {
+//         setError(response.data.message);
+//       }
+//     } catch {
+//       setError("Error verifying OTP. Try again.");
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h2>Register Now</h2>
+//       <input type="text" placeholder="Enter Mobile No" value={mobile} onChange={(e) => setMobile(e.target.value)} disabled={otpSent} />
+//       {!otpSent ? (
+//         <button onClick={sendOtp}>Send OTP</button>
+//       ) : (
+//         <>
+//           <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
+//           <button onClick={verifyOtp}>Verify OTP</button>
+//         </>
+//       )}
+//       {error && <p>{error}</p>}
+//       {verified && <p>✅ OTP Verified!</p>}
+//     </div>
+//   );
+// };
+
+// export default RegForm;
+
