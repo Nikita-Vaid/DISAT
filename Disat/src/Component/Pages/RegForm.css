@@ -8,7 +8,7 @@ body {
   
   /* Main Section */
   .main-section {
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     padding: 40px;
