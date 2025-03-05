@@ -3,6 +3,7 @@ import Registration from "./Component/Pages/Registration";
 import Login from "./Component/Pages/Login";
 import Layout from "./Component/Section/Layout";
 
+
 function App() {
   return (
     <BrowserRouter>
