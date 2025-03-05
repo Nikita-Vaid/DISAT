@@ -1,6 +1,6 @@
 import React from "react";
 import callIcon from "../../assets/call-icon-iacst.png"; // Ensure correct path
-import "./Navbar.css";
+import "../../Styles/Navbar.css";
 import logo from "../../assets/dott.png";
 
 const Navbar = () => {

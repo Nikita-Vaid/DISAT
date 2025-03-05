@@ -1,5 +1,5 @@
 import React from "react";
-import "./RegForm.css";
+import "../../Styles/RegForm.css";
 import DIAST from "../../assets/DIAST.png"; // Ensure correct path
 
 const RegForm = () => {
